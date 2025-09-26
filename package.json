@@ -1,0 +1,24 @@
+{
+  "name": "financialmanagement",
+  "version": "1.0.0",
+  "description": "Programa para gerenciamento financeiro",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CaduDevWeb/Financial-Management-App.git"
+  },
+  "keywords": [],
+  "author": "CaduDevWeb",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CaduDevWeb/Financial-Management-App/issues"
+  },
+  "homepage": "https://github.com/CaduDevWeb/Financial-Management-App#readme",
+  "devDependencies": {
+    "electron": "^38.1.2"
+  }
+}
