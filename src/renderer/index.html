@@ -20,21 +20,25 @@
         </div>
 
         <form id="expense-form">
-            <label for="expense-value">Valor Gasto</label>
-            <input type="number" id="expense-value" placeholder="Digite o valor do gasto">
-            <label for="expense-type">Tipo/Categoria do Gasto</label>
-            <select id="expense-category">
-                <option value="" disabled selected>Selecione uma Categoria</option>
-                <option value="Alimentação">Alimentação</option>
-                <option value="Transporte">Transporte</option>
-                <option value="Lazer">Lazer</option>
-                <option value="Moradia">Moradia</option>
-            </select>
-            <button id="add-expense-btn" type="submit">Adicionar Gasto</button>
+            <div class="card-botton-config">
+                <label for="expense-value">Valor Gasto</label>
+                <input type="number" id="expense-value" placeholder="Digite o valor do gasto">
+            </div>
+            <div class="card-botton-config">
+                <label for="expense-type">Categoria do Gasto</label>
+                <select id="expense-category">
+                    <option value="" disabled selected>Selecione uma Categoria</option>
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Transporte">Transporte</option>
+                    <option value="Lazer">Lazer</option>
+                    <option value="Moradia">Moradia</option>
+                </select>
+            </div>
+            <button id="add-expense-btn" class="scale-up-center" type="submit">Adicionar Gasto</button>
         </form>
         
         <div id="expense-grafic" class="card-config">
-            <canvas id="pie-grafic" width="400" height="400"></canvas>
+            <canvas id="pie-grafic" width="380" height="370"></canvas>
         </div>
     </div>
 </body>
