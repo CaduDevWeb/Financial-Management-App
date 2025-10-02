@@ -12,7 +12,18 @@
         <div id="expense-log" class="card-top-config card-config">
             <p>Log de Gastos</p>
             <ul id="list-expense">
-                <li class="li-expense"><p>R$1.250,00</p></li>
+                <li class="li-expense">
+                    <a href="#" class="expense-link">
+                        <span class="value">R$ 150,00</span>
+                        <span class="type-expense">Combutivel</span>
+                    </a>
+                </li>
+                <li class="li-expense">
+                    <a href="#" class="expense-link">
+                        <span class="value">R$ 70,00</span>
+                        <span class="type-expense">Mercado</span>
+                    </a>
+                </li>
             </ul>
         </div>
         
@@ -43,5 +54,7 @@
             <canvas id="pie-grafic" width="380" height="370"></canvas>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

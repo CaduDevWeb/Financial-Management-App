@@ -31,43 +31,12 @@ body {
     display: flex;
     flex-direction: column;
     padding: 10px 20px;
-    justify-content: center;
 }
 
 
 .card-top-config {
     width: 380px;
     height: 100px;
-    gap: 8px;
-}
-
-.list-expense:hover {
-    background-color: rgb(120, 122, 129);
-}
-
-
-.btn {
-    background-image: url(assets/editar-alt.png);
-    background-position: center;
-    background-size: 40px;
-    background-repeat: no-repeat;
-    background-color: transparent;
-    border: none;
-    width: 42px;
-    height: 42px;
-    cursor: pointer;
-}
-
-#expand-log-btn {
-    background-image: url(assets/down-arrow.png);
-    background-position: center;
-    background-size: 40px;
-    background-repeat: no-repeat;
-    background-color: transparent;
-    border: none;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
 }
 
 #all-expense {
@@ -99,6 +68,11 @@ body {
     flex-direction: column;
     align-items: center;
     border-radius: 10px;
+}
+
+#expense-log {
+    max-height: 110px;
+    overflow-y: auto;
 }
 
 .card-botton-config {
@@ -155,4 +129,29 @@ body {
   }
 }
 
+#list-expense {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
+.li-expense {
+    margin-bottom: 8px;
+    border-bottom: 1px solid #333;
+}
+
+.expense-link{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    padding: 12px 15px;
+    background-color: #2e2e2e;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.expense-link:hover,.expense-link:focus {
+    background-color: #4a4a4a;
+}
