@@ -1,7 +1,7 @@
 const {app, BrowserWindow} = require ('electron')
 const createWindow = () => {
     const mainWindow = new BrowserWindow({
-        width: 1200,
+        width: 920,
         height:800,
         autoHideMenuBar: false,
         webPreferences: {
@@ -11,7 +11,7 @@ const createWindow = () => {
         }
     })
     mainWindow.loadFile('src/renderer/index.html')
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
