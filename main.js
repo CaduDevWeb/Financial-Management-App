@@ -6,7 +6,7 @@ const createWindow = () => {
         autoHideMenuBar: false,
         webPreferences: {
             backgroundColor: '#2c3e50',
-            nodeIntegration: false,
+            nodeIntegration: true,
             contextIsolation: true
         }
     })

@@ -1,34 +1,26 @@
-// Dados para o grafico
-const data = {
-    labels: [ //Categorias de gastos
-        'Alimentação',
-        'Moradia',
-        'Transporte',
-        'Lazer'
-    ],
-    datasets: [{
-        labels: 'First piece',
-        data: [300, 50, 100, 60], // valores para cada fatia
-        backgroundColor: [ 
-            '#E74C3C', 
-            '#3498DB', 
-            '#F1C40F',
-            '#9B59B6'
-        ],
-        hoverOffset: 4 // efeito ao passar o mouse
-    }]
-};
+const Chart = require('chart.js')
 
-//Configuracao do Grafico
-const config = {
-    type: 'pie',// Tipo do Grafico
-    data: data,
-    option: {
-        responsive: true
+let expenseChart = null;
+
+function renderChart(data) {
+    const ctx = document.getElementById('expenseChart').getContext('2d');
+
+    if (expenseChart) {
+        // Se o grafico ja existe, apenas o atualiza
+        expenseChart.data = data;
+        expenseChart.ontimeupdate();
+    } else {
+        // 1. Defina o objeto de configuração (config) COMPLETO
+        const config = {
+            type: 'pie', // Tipo do Grafico
+            data: chartData, // Use os dados DINÂMICOS processados
+            options: { // Mantenha "options" no plural
+                responsive: true
+            }
+        };
+
+        // 2. Crie a instância do gráfico, passando 'config' como segundo argumento
+        const ctx = document.getElementById('expenseChart').getContext('2d');
+        expenseChart = new Chart(ctx, config);
     }
-};
-
-//Renderizar o grafico
-const ctx = document.getElementById('pie-grafic').getContext('2d');
-//Cria o grafico
-const mygrafic = new Chart(ctx, config);
+}
