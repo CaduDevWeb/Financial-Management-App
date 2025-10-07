@@ -36,11 +36,11 @@
         <form id="expense-form">
             <div class="card-botton-config">
                 <label for="expense-value">Valor Gasto</label>
-                <input type="number" id="expense-value" placeholder="Digite o valor do gasto">
+                <input type="number" id="expense-value" name="expense-value" placeholder="Digite o valor do gasto" required>
             </div>
             <div class="card-botton-config">
                 <label for="expense-type">Categoria do Gasto</label>
-                <select id="expense-category">
+                <select id="expense-category" name="expense-category" required>
                     <option value="" disabled selected>Selecione uma Categoria</option>
                     <option value="Alimentação">Alimentação</option>
                     <option value="Transporte">Transporte</option>
