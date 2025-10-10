@@ -1,31 +1,39 @@
+
 //Pegar os elemento HTML
 const inputValor = document.getElementById('expense-value')
 const inputCategoryExpense = document.getElementById('expense-category')
 const addExpenseBtn = document.getElementById('add-expense-btn')
 const elementForm = document.getElementById('expense-form')
 const expenseLog = document.getElementById('list-expense')
+// Chave do localStorage
+const STORAGE_KEY = 'allExpenses'
 
 //funções
-function addLog() {
-    const dataSavedJSON = localStorage.getItem('DataUsers')
 
-    if (!dataSavedJSON) {
-        console.log("nenhum dado encontrado no localStorage")
-        return
-    }
+function getExpenses() {
+    const dataSavedJSON = localStorage.getItem(STORAGE_KEY)
+    return dataSavedJSON ? JSON.parse(dataSavedJSON) : [];
+}
 
-    //Converter de volta a objeto
-    const objectDataReconvert = JSON.parse(dataSavedJSON)
+function saveExpenses(expenseArray) {
+    const dataJSON = JSON.stringify(expenseArray);
+    localStorage.setItem(STORAGE_KEY, dataJSON);
+    console.log('Dados')
+}
 
+function addLog(expense) {
     // criando o elemento da lista
     const newLi = document.createElement('li');
     newLi.classList.add('li-expense')
     const newLink = document.createElement('a')
     newLink.classList.add('expense-link')
+    newLink.href = `#details/${expense.id}`
     const spanValue = document.createElement('span')
-    spanValue.textContent = `R$ ${objectDataReconvert.value}`
+    spanValue.textContent = `R$ ${expense.value}`
     const spanType = document.createElement('span')
-    spanType.textContent = objectDataReconvert.type
+    spanType.textContent = expense.type
+
+    newLink.addEventListener('click', handleExpenseClick)
     
     //agora colocar em hierarquia
     expenseLog.appendChild(newLi)
@@ -34,28 +42,33 @@ function addLog() {
     newLink.appendChild(spanType)
 }
 
+function handleExpenseClick(event) {
+    event.preventDefault();
+
+    const expenseId = event.currentTarget.getAttribute('href').replace('#details/','')
+
+    openElectronDetailWindow(expenseId)
+}
 //Evento de click
 elementForm.addEventListener('submit',function(event) {
     event.preventDefault()
     
     const formElement = event.target;
     
-    const objectData = {
-        value: formElement.elements['expense-value'].value,
-        type:  formElement.elements['expense-category'].value
-    };
-    
-    //Converter o objeto em json
-    
-    const dataJSON = JSON.stringify(objectData);
-    
-    //Salvar no localStorage
-    
-    localStorage.setItem('DataUsers', dataJSON);
-    
-    console.log('Dados salvos')
-    console.log(dataJSON)
+    const newId = Date.now().toString() + Math.floor(Math.random() * 1000)
 
-    addLog();
+    const newExpense = {
+        id: newId,
+        value: formElement.elements['expense-value'].value,
+        type: formElement.elements['expense-category'].value
+    };
+
+    const currentExpenses = getExpenses()
+    currentExpenses.push(newExpense);
+
+    saveExpenses(currentExpenses);
+
+    addLog(newExpense);
+    formElement.reset();
 })
 
