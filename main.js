@@ -1,5 +1,5 @@
-const path = require('electron')
-const {app, BrowserWindow} = require ('electron')
+const path = require('path')
+const {app, BrowserWindow, ipcMain} = require ('electron')
 const createWindow = () => {
     const mainWindow = new BrowserWindow({
         width: 920,
@@ -8,19 +8,27 @@ const createWindow = () => {
         webPreferences: {
             backgroundColor: '#2c3e50',
             nodeIntegration: true,
+            preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true
         }
     })
     mainWindow.loadFile('src/renderer/index.html')
-    editInputWindow.loadFile('src/renderer/editInputWindow.html')
     //mainWindow.webContents.openDevTools();
 }
-
+ipcMain.on('openingDetails',(event, expenseId) =>{
+    console.log('ID recebido no Main: ', expenseId);
+    openElectronDetailWindow(expenseId)
+})
 function openElectronDetailWindow(expenseId) {
     const editInputWindow = new BrowserWindow({
         width: 450,
         height: 450,
-        autoHideMenuBar:false
+        title: `Detalhes do Objeto: ${expenseId}`,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js'), 
+            contextIsolation: true,
+            nodeIntegration: false
+        },
     })
 
 

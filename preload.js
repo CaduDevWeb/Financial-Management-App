@@ -1,7 +1,9 @@
 const {contextBridge, ipcRenderer } = require('electron')
 
-contextBridge.exposeInMainWorld('electronAPI', {
-    openDetailWindow: (expenseData) => ipcRenderer.send('o')
+contextBridge.exposeInMainWorld('windowDetails', {
+    openDetails: (id) => {
+        ipcRenderer.send('openingDetails', id);
+    }
 })
 
-// Fazer um preload e toda a conexao para a segunda tela atraves do ipcRenderer
+// COntinuar fazer a conexao, arrumar o erro que a segunda pagina nao esta pegando o html e bolar um jeito de carregegar as informacoes na segunda tela

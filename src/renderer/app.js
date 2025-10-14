@@ -1,4 +1,3 @@
-
 //Pegar os elemento HTML
 const inputValor = document.getElementById('expense-value')
 const inputCategoryExpense = document.getElementById('expense-category')
@@ -18,7 +17,6 @@ function getExpenses() {
 function saveExpenses(expenseArray) {
     const dataJSON = JSON.stringify(expenseArray);
     localStorage.setItem(STORAGE_KEY, dataJSON);
-    console.log('Dados')
 }
 
 function addLog(expense) {
@@ -47,7 +45,10 @@ function handleExpenseClick(event) {
 
     const expenseId = event.currentTarget.getAttribute('href').replace('#details/','')
 
-    openElectronDetailWindow(expenseId)
+    if (expenseId) {
+        window.windowDetails.openDetails(expenseId)
+    }
+
 }
 //Evento de click
 elementForm.addEventListener('submit',function(event) {
@@ -62,7 +63,7 @@ elementForm.addEventListener('submit',function(event) {
         value: formElement.elements['expense-value'].value,
         type: formElement.elements['expense-category'].value
     };
-
+    console.log(`registrado objeto: ${this.id}`)
     const currentExpenses = getExpenses()
     currentExpenses.push(newExpense);
 
