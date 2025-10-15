@@ -42,13 +42,22 @@ function addLog(expense) {
 
 function handleExpenseClick(event) {
     event.preventDefault();
+    const arrayExpense = getExpenses()
+    console.log(arrayExpense)
 
     const expenseId = event.currentTarget.getAttribute('href').replace('#details/','')
-
     if (expenseId) {
-        window.windowDetails.openDetails(expenseId)
+        console.log('objeto tentando ser enviado')
+        window.windowDetails.openDetails(expenseId,expenseObject)
+        console.log('objeto enviado')
     }
 
+}
+
+function clearAllExpenses() {
+    const STORAGE_KEY = 'allExpenses'
+    localStorage.removeItem(STORAGE_KEY)
+    window.location.reload()
 }
 //Evento de click
 elementForm.addEventListener('submit',function(event) {
@@ -72,4 +81,10 @@ elementForm.addEventListener('submit',function(event) {
     addLog(newExpense);
     formElement.reset();
 })
+// Escuta a chamada do main para limpar o localstorage
+document.addEventListener('DOMContentLoaded', () => {
+    window.ipc.onCleanupRequest(() => {
+        clearAllExpenses()
+    })
 
+})

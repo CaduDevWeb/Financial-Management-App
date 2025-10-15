@@ -1,25 +1,38 @@
 const path = require('path')
-const {app, BrowserWindow, ipcMain} = require ('electron')
+const {app, BrowserWindow, ipcMain, Menu} = require ('electron')
+
+const CLEANUP_CHANNEL = 'app:clean-data'
+let mainWindow = null;
+
 const createWindow = () => {
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 920,
         height:800,
-        autoHideMenuBar: false,
         webPreferences: {
             backgroundColor: '#2c3e50',
-            nodeIntegration: true,
-            preload: path.join(__dirname, 'preload.js'),
+            nodeIntegration: false,
+            preload: './preload.js',
             contextIsolation: true
         }
     })
     mainWindow.loadFile('src/renderer/index.html')
-    //mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 }
-ipcMain.on('openingDetails',(event, expenseId) =>{
+
+function sendCleanupMessageToRenderer() {
+    if(mainWindow) {
+        mainWindow.webContents.send(CLEANUP_CHANNEL, 'clean now')
+        console.log('Main: Comando para limpeza enviado ao renderizador')
+    }
+}
+ipcMain.on('openingDetails',(event,expenseId, expenseObject) =>{
     console.log('ID recebido no Main: ', expenseId);
-    openElectronDetailWindow(expenseId)
+    if(expenseObject) {
+        console.log('Objeto enviado a segunda tela')
+    }
+    openElectronDetailWindow(expenseId, expenseObject)
 })
-function openElectronDetailWindow(expenseId) {
+function openElectronDetailWindow(expenseId, expenseObject) {
     const editInputWindow = new BrowserWindow({
         width: 450,
         height: 450,
@@ -31,8 +44,30 @@ function openElectronDetailWindow(expenseId) {
         },
     })
 
+    editInputWindow.loadFile('src/renderer/editInputWindow.html')
+    
 
+    
 }
+
+const template = [
+    {
+        label: 'Arquivo',
+        submenu: [
+            {
+                label: 'Limpar Todas as Despesas',
+                click: () => {
+                    sendCleanupMessageToRenderer()
+                }
+            },
+            { type: 'separator'},
+            { role: 'quit', label: 'Sair'}
+        ]
+    }
+]
+
 app.whenReady().then(() => {
+    const menu = Menu.buildFromTemplate(template)
+    //Menu.setApplicationMenu(menu)
     createWindow()
 })

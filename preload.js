@@ -1,9 +1,12 @@
 const {contextBridge, ipcRenderer } = require('electron')
 
 contextBridge.exposeInMainWorld('windowDetails', {
-    openDetails: (id) => {
-        ipcRenderer.send('openingDetails', id);
+    openDetails: (id, expenseObject) => {
+        ipcRenderer.send('openingDetails', id, expenseObject);
     }
 })
 
-// COntinuar fazer a conexao, arrumar o erro que a segunda pagina nao esta pegando o html e bolar um jeito de carregegar as informacoes na segunda tela
+contextBridge.executeInMainWorld('ipc', {
+    onCleanupRequest: (callback) =>  ipcRenderer.on('app:clean-data', (event, args) => callback(args))
+})
+
