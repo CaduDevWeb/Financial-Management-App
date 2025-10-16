@@ -1,5 +1,6 @@
 const path = require('path')
-const {app, BrowserWindow, ipcMain, Menu} = require ('electron')
+const { app, BrowserWindow, ipcMain, Menu, MenuItem, webContents } = require('electron');
+const { WebContentsView } = require('electron/main');
 
 const CLEANUP_CHANNEL = 'app:clean-data'
 let mainWindow = null;
@@ -7,11 +8,11 @@ let mainWindow = null;
 const createWindow = () => {
     mainWindow = new BrowserWindow({
         width: 920,
-        height:800,
+        height: 800,
         webPreferences: {
             backgroundColor: '#2c3e50',
             nodeIntegration: false,
-            preload: './preload.js',
+            preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true
         }
     })
@@ -19,35 +20,37 @@ const createWindow = () => {
     mainWindow.webContents.openDevTools();
 }
 
-function sendCleanupMessageToRenderer() {
-    if(mainWindow) {
-        mainWindow.webContents.send(CLEANUP_CHANNEL, 'clean now')
-        console.log('Main: Comando para limpeza enviado ao renderizador')
+ipcMain.on('openingDetails', (event, expenseObject) => {
+    //console.log('ID recebido no Main: ', expenseId);
+    if (expenseObject != undefined) {
+        console.log(`objeto: ${expenseObject} enviado a segunda tela`)
+        openElectronDetailWindow(expenseObject)
+    }else {
+        console.log('objeto indefinido')
     }
-}
-ipcMain.on('openingDetails',(event,expenseId, expenseObject) =>{
-    console.log('ID recebido no Main: ', expenseId);
-    if(expenseObject) {
-        console.log('Objeto enviado a segunda tela')
-    }
-    openElectronDetailWindow(expenseId, expenseObject)
 })
-function openElectronDetailWindow(expenseId, expenseObject) {
+function openElectronDetailWindow(expenseObject) {
     const editInputWindow = new BrowserWindow({
         width: 450,
         height: 450,
-        title: `Detalhes do Objeto: ${expenseId}`,
+        //title: `Detalhes do Objeto: ${expenseId}`,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js'), 
+            preload: path.join(__dirname, 'preload-editInput.js'),
             contextIsolation: true,
             nodeIntegration: false
         },
     })
 
     editInputWindow.loadFile('src/renderer/editInputWindow.html')
-    
 
-    
+    ipcMain.on('SendToSecondView', (event,expenseObject)=> {
+        editInputWindow.webContents.send('ReceivedFromMain', expenseObject)
+    })
+}
+
+function sendCleanupMessageToRenderer() {
+    mainWindow.webContents.send('CleanupChannel', 'Limpeza Concluida')
+    console.log('Pedindo limpeza')
 }
 
 const template = [
@@ -60,14 +63,22 @@ const template = [
                     sendCleanupMessageToRenderer()
                 }
             },
-            { type: 'separator'},
-            { role: 'quit', label: 'Sair'}
+            { type: 'separator' },
+            { role: 'quit', label: 'Sair' }
+        ],
+    },
+    {
+        label: 'Tela',
+        submenu: [
+            {
+                role: 'reload', label: 'Recarregar'},
+            {  role: 'toggleDevTools', label: 'DevTools'}
         ]
     }
 ]
 
 app.whenReady().then(() => {
     const menu = Menu.buildFromTemplate(template)
-    //Menu.setApplicationMenu(menu)
+    Menu.setApplicationMenu(menu)
     createWindow()
 })

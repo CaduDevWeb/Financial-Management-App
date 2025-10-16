@@ -19,10 +19,10 @@
   },
   "homepage": "https://github.com/CaduDevWeb/Financial-Management-App#readme",
   "devDependencies": {
-    "electron": "^38.1.2",
     "electron-mocha": "^13.1.0"
   },
   "dependencies": {
-    "chart.js": "^4.5.0"
+    "chart.js": "^4.5.0",
+    "electron": "^38.3.0"
   }
 }

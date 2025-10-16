@@ -27,7 +27,7 @@ function addLog(expense) {
     newLink.classList.add('expense-link')
     newLink.href = `#details/${expense.id}`
     const spanValue = document.createElement('span')
-    spanValue.textContent = `R$ ${expense.value}`
+    spanValue.textContent = `R$ ${expense.value.replace('.',',')}`
     const spanType = document.createElement('span')
     spanType.textContent = expense.type
 
@@ -39,25 +39,26 @@ function addLog(expense) {
     newLink.appendChild(spanValue)
     newLink.appendChild(spanType)
 }
-
+//Funcao para enviar os dados da expense que foi clicada para a segunda tela 
 function handleExpenseClick(event) {
     event.preventDefault();
     const arrayExpense = getExpenses()
     console.log(arrayExpense)
 
     const expenseId = event.currentTarget.getAttribute('href').replace('#details/','')
+    const expenseObject = arrayExpense.find(item => item.id === expenseId)
     if (expenseId) {
         console.log('objeto tentando ser enviado')
-        window.windowDetails.openDetails(expenseId,expenseObject)
+        window.windowDetails.openDetails(expenseObject)
         console.log('objeto enviado')
     }
 
 }
-
+//Funcao de Limpar O Storage
 function clearAllExpenses() {
     const STORAGE_KEY = 'allExpenses'
     localStorage.removeItem(STORAGE_KEY)
-    window.location.reload()
+    return
 }
 //Evento de click
 elementForm.addEventListener('submit',function(event) {
@@ -82,9 +83,7 @@ elementForm.addEventListener('submit',function(event) {
     formElement.reset();
 })
 // Escuta a chamada do main para limpar o localstorage
-document.addEventListener('DOMContentLoaded', () => {
-    window.ipc.onCleanupRequest(() => {
-        clearAllExpenses()
-    })
-
+window.CleanupChannel.onCleanup((message) => {
+    clearAllExpenses()
+    console.log(message)
 })
