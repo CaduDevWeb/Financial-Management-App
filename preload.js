@@ -15,5 +15,5 @@ contextBridge.exposeInMainWorld('CleanupChannel', {
     }
 });
 
-// Resolver os erros da segunda tela
+// Resolver os erros da segunda tela(o erro estava no codigo em si do preload da segunda tela)
 // fazer a segunda tela ja carregar com as informacoes da expense clicada

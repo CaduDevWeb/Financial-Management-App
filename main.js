@@ -1,6 +1,8 @@
 const path = require('path')
 const { app, BrowserWindow, ipcMain, Menu, MenuItem, webContents } = require('electron');
 const { WebContentsView } = require('electron/main');
+const { url } = require('inspector');
+const { dirname } = require('path/posix');
 
 const CLEANUP_CHANNEL = 'app:clean-data'
 let mainWindow = null;
@@ -35,7 +37,8 @@ function openElectronDetailWindow(expenseObject) {
         height: 450,
         //title: `Detalhes do Objeto: ${expenseId}`,
         webPreferences: {
-            preload: path.join(__dirname, 'preload-editInput.js'),
+            //preload: path.join(__dirname, 'preload.js'),
+            preload: path.join(__dirname, 'preload-second.js'),
             contextIsolation: true,
             nodeIntegration: false
         },
@@ -49,8 +52,6 @@ function openElectronDetailWindow(expenseObject) {
 }
 
 function sendCleanupMessageToRenderer() {
-    mainWindow.webContents.send('CleanupChannel', 'Limpeza Concluida')
-    console.log('Pedindo limpeza')
 }
 
 const template = [
@@ -60,7 +61,9 @@ const template = [
             {
                 label: 'Limpar Todas as Despesas',
                 click: () => {
-                    sendCleanupMessageToRenderer()
+                    //sendCleanupMessageToRenderer()
+                    mainWindow.webContents.send('CleanupChannel', 'Limpeza Concluida')
+                    console.log('Pedindo limpeza')
                 }
             },
             { type: 'separator' },
