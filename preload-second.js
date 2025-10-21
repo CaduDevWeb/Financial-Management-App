@@ -1,8 +1,11 @@
 const {contextBridge, ipcRenderer, ipcMain } = require('electron')
 
-contextBridge.exposeInIsolatedWorld('secundaryApi', {
-    Received: (callback) => {
-        ipcRenderer.on('ReceivedFromMain',(event,expenseObject)=> callback(expenseObject));
+contextBridge.exposeInMainWorld('windowSecundary', {
+    Sended: (newType,newValue) => {
+        ipcRenderer.send('sendInfoChange', newType,newValue);
+    },
+
+    closeWindow: () => {
+        ipcRenderer.send('closeSecundaryWindow')
     }
 })
-console.log('preload-second.js carregado!');

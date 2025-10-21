@@ -38,21 +38,29 @@ function addLog(expense) {
     newLi.appendChild(newLink)
     newLink.appendChild(spanValue)
     newLink.appendChild(spanType)
+    return
 }
-//Funcao para enviar os dados da expense que foi clicada para a segunda tela 
+//Funcao para que vai receber os dados modificados e atualizar a expense
 function handleExpenseClick(event) {
     event.preventDefault();
+    window.windowDetails.openDetails()
     const arrayExpense = getExpenses()
-    console.log(arrayExpense)
 
     const expenseId = event.currentTarget.getAttribute('href').replace('#details/','')
     const expenseObject = arrayExpense.find(item => item.id === expenseId)
-    if (expenseId) {
-        console.log('objeto tentando ser enviado')
-        window.windowDetails.openDetails(expenseObject)
-        console.log('objeto enviado')
-    }
+    console.log(expenseObject)
 
+    if (expenseObject) {
+        console.log('objeto encontrado')
+        window.sendData.onNewData((newRecivedType, newRecivedValue) => {
+            expenseObject.value = newRecivedValue
+            expenseObject.type = newRecivedType
+            console.log(`Objeto alterado para: ${expenseObject.value} == ${newRecivedValue} /// ${expenseObject.type} === ${newRecivedType}`)
+            //console.log(arrayExpense)
+            saveExpenses(arrayExpense)
+            updateLogExpense(arrayExpense)
+        })
+    }
 }
 //Funcao de Limpar O Storage
 function clearAllExpenses() {
@@ -60,6 +68,17 @@ function clearAllExpenses() {
     localStorage.removeItem(STORAGE_KEY)
     return
 }
+
+//Funcao para dar update no log de gastos
+function updateLogExpense(arrayExpense) {
+    expenseLog.innerHTML= ''
+    console.log('limpeza do Log de gastos concluida')
+    arrayExpense.forEach(expense => {
+        addLog(expense)
+    });
+}
+
+
 //Evento de click
 elementForm.addEventListener('submit',function(event) {
     event.preventDefault()

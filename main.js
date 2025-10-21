@@ -22,16 +22,25 @@ const createWindow = () => {
     mainWindow.webContents.openDevTools();
 }
 
-ipcMain.on('openingDetails', (event, expenseObject) => {
-    //console.log('ID recebido no Main: ', expenseId);
-    if (expenseObject != undefined) {
-        console.log(`objeto: ${expenseObject} enviado a segunda tela`)
-        openElectronDetailWindow(expenseObject)
-    }else {
-        console.log('objeto indefinido')
+ipcMain.on('closeSecundaryWindow', (event) => {
+    const webContents =event.sender
+    const secondWindow = BrowserWindow.fromWebContents(webContents)
+
+    if (secondWindow) {
+        secondWindow.close();
     }
 })
-function openElectronDetailWindow(expenseObject) {
+
+ipcMain.on('sendInfoChange', (event, newType, newValue) => {
+    mainWindow.webContents.send('new-data', newType, newValue)
+    console.log(`[Main] Enviando dados: ${newType} e ${newValue}`)
+})
+
+ipcMain.on('openingDetails', () => {
+    //console.log('ID recebido no Main: ', expenseId);
+        openElectronDetailWindow()
+})
+function openElectronDetailWindow() {
     const editInputWindow = new BrowserWindow({
         width: 450,
         height: 450,
@@ -46,12 +55,6 @@ function openElectronDetailWindow(expenseObject) {
 
     editInputWindow.loadFile('src/renderer/editInputWindow.html')
 
-    ipcMain.on('SendToSecondView', (event,expenseObject)=> {
-        editInputWindow.webContents.send('ReceivedFromMain', expenseObject)
-    })
-}
-
-function sendCleanupMessageToRenderer() {
 }
 
 const template = [

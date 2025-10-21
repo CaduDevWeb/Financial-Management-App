@@ -1,8 +1,9 @@
 const {contextBridge, ipcRenderer, ipcMain } = require('electron')
 
 contextBridge.exposeInMainWorld('windowDetails', {
-    openDetails: (id, expenseObject) => {
-        ipcRenderer.send('openingDetails', id, expenseObject);
+    openDetails: () => {
+        ipcRenderer.send('openingDetails');
+        console.log('[Preload.js]: O canal "openDetails" foi configurado no preload.');
     }
 })
 
@@ -11,9 +12,16 @@ contextBridge.exposeInMainWorld('CleanupChannel', {
     onCleanup: (callback) => {
         // Usa `ipcRenderer.on` para escutar o evento do processo principal
         ipcRenderer.on('CleanupChannel', (event, args) => callback(args));
-        console.log('O ouvinte do canal "CleanupChannel" foi configurado no preload.');
+        console.log('[Preload.js]: O ouvinte do canal "CleanupChannel" foi configurado no preload.');
     }
 });
 
-// Resolver os erros da segunda tela(o erro estava no codigo em si do preload da segunda tela)
-// fazer a segunda tela ja carregar com as informacoes da expense clicada
+contextBridge.exposeInMainWorld('sendData', {
+    onNewData: (callback) => {
+        ipcRenderer.once('new-data', (event, newType, newValue) => {
+            callback(newType,newValue)
+            console.log('[Preload.js]: O canal "onNewData" foi configurado no preload.')
+        })
+    }
+})
+
