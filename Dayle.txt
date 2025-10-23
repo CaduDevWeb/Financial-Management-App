@@ -1,4 +1,1 @@
-//Remover todos os consoles logs inuteis
-//Fazer mais teste no uptadeLog para ver se esta funcionando
-//Criar botao no hideMenu para ver a liste de objetos(ainda pensando no assunto)
-//Criar a funcao de Despesa total somando todos valores do array e colocando na tela
+//Cria o charts

@@ -15,7 +15,7 @@
         <form id="expense-form">
             <div class="card-botton-config">
                 <label for="expense-value">Valor Gasto</label>
-                <input type="number" id="expense-value" name="expense-value" placeholder="Digite o valor do gasto" required>
+                <input type="number" id="expense-value" name="expense-value" placeholder="Digite o valor do gasto" required step="any">
             </div>
             <div class="card-botton-config">
                 <label for="expense-type">Categoria do Gasto</label>
@@ -27,7 +27,10 @@
                     <option value="Moradia">Moradia</option>
                 </select>
             </div>
-            <button id="add-expense-btn" class="scale-up-center" type="submit">Confirmar Alteração</button>
+            <div class="card-botton-config ">
+                <button id="remove-expense-btn" class="scale-up-center">Remover despesa</button>
+                <button id="add-expense-btn" class="scale-up-center" type="submit">Confirmar Alteração</button>
+            </div>
         </form>
     </div>
     <script src="./editInputWindow.js"></script>

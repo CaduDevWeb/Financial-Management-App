@@ -102,6 +102,17 @@ body {
     width: 100%;
 }
 
+#remove-expense-btn{
+    color: white;
+    background-color: #EE4B2B;
+    font-family: Roboto;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    padding: 10px 10px;
+    width: 150px; 
+}
+
 #add-expense-btn {
     color: white;
     background-color: #2ECC71;
@@ -128,6 +139,7 @@ body {
             transform: scale(1.1);
   }
 }
+
 
 #list-expense {
     list-style: none;

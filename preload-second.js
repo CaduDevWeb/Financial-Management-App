@@ -7,5 +7,9 @@ contextBridge.exposeInMainWorld('windowSecundary', {
 
     closeWindow: () => {
         ipcRenderer.send('closeSecundaryWindow')
+    },
+
+    remove: () => {
+        ipcRenderer.send('removeElement')
     }
 })

@@ -23,6 +23,6 @@
   },
   "dependencies": {
     "chart.js": "^4.5.0",
-    "electron": "^38.3.0"
+    "electron": "^38.4.0"
   }
 }

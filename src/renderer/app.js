@@ -4,10 +4,17 @@ const inputCategoryExpense = document.getElementById('expense-category')
 const addExpenseBtn = document.getElementById('add-expense-btn')
 const elementForm = document.getElementById('expense-form')
 const expenseLog = document.getElementById('list-expense')
+const allExpenses = document.getElementById('all-expense-value')
+// carregar as informacoes iniciais
+document.addEventListener('DOMContentLoaded', initInfomation)
 // Chave do localStorage
 const STORAGE_KEY = 'allExpenses'
 
 //funções
+function initInfomation() {
+    updateLogExpense()
+    allExpenseValue()
+}
 
 function getExpenses() {
     const dataSavedJSON = localStorage.getItem(STORAGE_KEY)
@@ -40,7 +47,7 @@ function addLog(expense) {
     newLink.appendChild(spanType)
     return
 }
-//Funcao para que vai receber os dados modificados e atualizar a expense
+//Funcao para que vai receber os dados modificados e atualizar a expense ou remover ela
 function handleExpenseClick(event) {
     event.preventDefault();
     window.windowDetails.openDetails()
@@ -51,7 +58,6 @@ function handleExpenseClick(event) {
     console.log(expenseObject)
 
     if (expenseObject) {
-        console.log('objeto encontrado')
         window.sendData.onNewData((newRecivedType, newRecivedValue) => {
             expenseObject.value = newRecivedValue
             expenseObject.type = newRecivedType
@@ -59,6 +65,14 @@ function handleExpenseClick(event) {
             //console.log(arrayExpense)
             saveExpenses(arrayExpense)
             updateLogExpense(arrayExpense)
+            allExpenseValue()
+        })
+        window.windowDetails.remove((data) => {
+            arrayExpense.splice(arrayExpense.indexOf(expenseId), 1)
+            saveExpenses(arrayExpense)
+            updateLogExpense(arrayExpense)
+            allExpenseValue()
+            console.log('elemento eliminado')
         })
     }
 }
@@ -71,6 +85,9 @@ function clearAllExpenses() {
 
 //Funcao para dar update no log de gastos
 function updateLogExpense(arrayExpense) {
+    if (arrayExpense === undefined){
+        arrayExpense = getExpenses()
+    }
     expenseLog.innerHTML= ''
     console.log('limpeza do Log de gastos concluida')
     arrayExpense.forEach(expense => {
@@ -97,7 +114,7 @@ elementForm.addEventListener('submit',function(event) {
     currentExpenses.push(newExpense);
 
     saveExpenses(currentExpenses);
-
+    allExpenseValue()
     addLog(newExpense);
     formElement.reset();
 })
@@ -106,3 +123,13 @@ window.CleanupChannel.onCleanup((message) => {
     clearAllExpenses()
     console.log(message)
 })
+
+function allExpenseValue() {
+    let total = 0;
+    currentExpenses = getExpenses()
+    currentExpenses.forEach(expense => {
+        total = total + parseFloat(expense.value)
+    })
+    allExpenses.innerText = `R$ ${total.toFixed(2)}`.replace('.',',')
+}
+

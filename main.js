@@ -1,8 +1,5 @@
 const path = require('path')
 const { app, BrowserWindow, ipcMain, Menu, MenuItem, webContents } = require('electron');
-const { WebContentsView } = require('electron/main');
-const { url } = require('inspector');
-const { dirname } = require('path/posix');
 
 const CLEANUP_CHANNEL = 'app:clean-data'
 let mainWindow = null;
@@ -21,6 +18,11 @@ const createWindow = () => {
     mainWindow.loadFile('src/renderer/index.html')
     mainWindow.webContents.openDevTools();
 }
+
+ipcMain.on('removeElement', (event) => {
+    mainWindow.webContents.send('RemoveChannel', 'pedido de remocao')
+    console.log('comando chegou ao main')
+})
 
 ipcMain.on('closeSecundaryWindow', (event) => {
     const webContents =event.sender
@@ -42,8 +44,8 @@ ipcMain.on('openingDetails', () => {
 })
 function openElectronDetailWindow() {
     const editInputWindow = new BrowserWindow({
-        width: 450,
-        height: 450,
+        width: 480,
+        height: 480,
         //title: `Detalhes do Objeto: ${expenseId}`,
         webPreferences: {
             //preload: path.join(__dirname, 'preload.js'),
@@ -66,6 +68,7 @@ const template = [
                 click: () => {
                     //sendCleanupMessageToRenderer()
                     mainWindow.webContents.send('CleanupChannel', 'Limpeza Concluida')
+                    mainWindow.webContents.reload()
                     console.log('Pedindo limpeza')
                 }
             },

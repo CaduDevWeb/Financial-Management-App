@@ -1,9 +1,12 @@
-const {contextBridge, ipcRenderer, ipcMain } = require('electron')
+const { contextBridge, ipcRenderer, ipcMain } = require('electron')
 
 contextBridge.exposeInMainWorld('windowDetails', {
     openDetails: () => {
         ipcRenderer.send('openingDetails');
         console.log('[Preload.js]: O canal "openDetails" foi configurado no preload.');
+    },
+    remove: (callback) => {
+        ipcRenderer.on('RemoveChannel', (event, data) => callback(data))
     }
 })
 
@@ -19,7 +22,7 @@ contextBridge.exposeInMainWorld('CleanupChannel', {
 contextBridge.exposeInMainWorld('sendData', {
     onNewData: (callback) => {
         ipcRenderer.once('new-data', (event, newType, newValue) => {
-            callback(newType,newValue)
+            callback(newType, newValue)
             console.log('[Preload.js]: O canal "onNewData" foi configurado no preload.')
         })
     }
