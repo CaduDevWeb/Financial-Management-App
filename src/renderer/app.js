@@ -1,3 +1,4 @@
+import { renderChart } from "../renderer/grafic.js" // Ou "../renderer/grafic.js"
 //Pegar os elemento HTML
 const inputValor = document.getElementById('expense-value')
 const inputCategoryExpense = document.getElementById('expense-category')
@@ -14,6 +15,7 @@ const STORAGE_KEY = 'allExpenses'
 function initInfomation() {
     updateLogExpense()
     allExpenseValue()
+    renderChart()
 }
 
 function getExpenses() {
@@ -66,12 +68,14 @@ function handleExpenseClick(event) {
             saveExpenses(arrayExpense)
             updateLogExpense(arrayExpense)
             allExpenseValue()
+            updateAppAndRenderGraph()
         })
         window.windowDetails.remove((data) => {
             arrayExpense.splice(arrayExpense.indexOf(expenseId), 1)
             saveExpenses(arrayExpense)
             updateLogExpense(arrayExpense)
             allExpenseValue()
+            updateAppAndRenderGraph()
             console.log('elemento eliminado')
         })
     }
@@ -116,6 +120,7 @@ elementForm.addEventListener('submit',function(event) {
     saveExpenses(currentExpenses);
     allExpenseValue()
     addLog(newExpense);
+    updateAppAndRenderGraph()
     formElement.reset();
 })
 // Escuta a chamada do main para limpar o localstorage
@@ -126,10 +131,17 @@ window.CleanupChannel.onCleanup((message) => {
 
 function allExpenseValue() {
     let total = 0;
-    currentExpenses = getExpenses()
+    const currentExpenses = getExpenses()
     currentExpenses.forEach(expense => {
         total = total + parseFloat(expense.value)
     })
     allExpenses.innerText = `R$ ${total.toFixed(2)}`.replace('.',',')
 }
 
+function updateAppAndRenderGraph() {
+    const Expense = getExpenses()
+    const chartsLabels = Expense.map(expense => expense.type);
+    const chartsValues = Expense.map(expense => parseFloat(expense.value));
+    console.log('Reload ativado')
+    renderChart(chartsLabels, chartsValues)
+}

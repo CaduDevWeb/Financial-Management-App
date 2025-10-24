@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "build": "parcel build src/renderer/index.html --public-url ./"
   },
   "repository": {
     "type": "git",
@@ -19,10 +20,11 @@
   },
   "homepage": "https://github.com/CaduDevWeb/Financial-Management-App#readme",
   "devDependencies": {
-    "electron-mocha": "^13.1.0"
+    "electron-mocha": "^13.1.0",
+    "parcel": "^2.16.0"
   },
   "dependencies": {
-    "chart.js": "^4.5.0",
+    "chart.js": "^4.5.1",
     "electron": "^38.4.0"
   }
 }

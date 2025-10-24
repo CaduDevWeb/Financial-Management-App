@@ -15,8 +15,8 @@ const createWindow = () => {
             contextIsolation: true
         }
     })
-    mainWindow.loadFile('src/renderer/index.html')
-    mainWindow.webContents.openDevTools();
+    mainWindow.loadFile(path.join(__dirname, 'dist','index.html'))
+    //mainWindow.webContents.openDevTools();
 }
 
 ipcMain.on('removeElement', (event) => {
@@ -51,10 +51,11 @@ function openElectronDetailWindow() {
             //preload: path.join(__dirname, 'preload.js'),
             preload: path.join(__dirname, 'preload-second.js'),
             contextIsolation: true,
-            nodeIntegration: false
+            nodeIntegration: false,
         },
     })
-
+    
+    editInputWindow.setMenuBarVisibility(false);
     editInputWindow.loadFile('src/renderer/editInputWindow.html')
 
 }
